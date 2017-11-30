@@ -1,0 +1,97 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Right Angle Triangles Canvas</title>
+</head>
+<body onload="drawTriangles();">
+
+    <h2>Right Angle Triangles - click a triangle for more details</h2>
+
+    <canvas id="myCanvas" width="60" height="60" onclick="triangleDetails(event);"></canvas>
+    <br>
+
+    <script>
+        function drawTriangles() {
+            var canvasElement = document.querySelector("#myCanvas");
+            var context = canvasElement.getContext("2d");
+            var fillStyle = '';
+            var x = 0;
+            var y = 0;
+            var label = '';
+
+            for (y = 0; y < 60; y += 10) {
+                for (x = 0; x < 60; x += 10) {
+                    // the triangle
+                    context.beginPath();
+                    context.moveTo(x, y);
+                    context.lineTo(x, y + 10);
+                    context.lineTo(x + 10, y + 10);
+                    context.closePath();
+
+                    // the outline
+                    context.lineWidth = 1;
+                    context.strokeStyle = '#666666';
+                    context.stroke();
+
+                    // the fill color - toggle orange and no fill
+                    if (fillStyle == '') {
+                        fillStyle = '#FFCC00';
+                    } else {
+                        fillStyle = '';
+                    }
+                    context.fillStyle = fillStyle;
+                    context.fill();
+                }
+            }
+        }
+
+        function triangleDetails(event) {
+            var pos_x = event.offsetX ? (event.offsetX) : event.pageX - document.getElementById("pointer_div").offsetLeft;
+            var pos_y = event.offsetY ? (event.offsetY) : event.pageY - document.getElementById("pointer_div").offsetTop;
+            var row = '';
+            var col = 1;;
+            var triangleCoordinates = '';
+            var x = 0;
+            var y = 0;
+ 
+            if (pos_y > 0 && pos_y < 10) {
+                row = 'A';
+            } else if (pos_y < 20) {
+                row = 'B';
+            } else if (pos_y < 30) {
+                row = 'C';
+            } else if (pos_y < 40) {
+                row = 'D';
+            } else if (pos_y < 50) {
+                row = 'E';
+            } else {
+                row = 'F';
+            }
+
+            col = Math.trunc((pos_x / 5) + 1);
+            if (col > 12) col = 12;
+
+            x = (Math.trunc(pos_x / 10) * 10);
+            y = (Math.trunc(pos_y / 10) * 10);
+            triangleCoordinates = ' (' + x + ',' + y + ')';
+            // even number indicates increase on x axis
+            if (col % 2 == 0) {
+                x += 10;
+                triangleCoordinates += ' (' + x + ',' + y + ')';
+                y += 10;
+            } else {
+                y += 10;
+                triangleCoordinates += ' (' + x + ',' + y + ')';
+                x += 10;
+            }
+            triangleCoordinates += ' (' + x + ',' + y + ')';
+
+            alert('Triangle is ' + row + col + ', Coords: ' + triangleCoordinates);
+        }
+
+
+    </script>
+
+</body>
+</html>
